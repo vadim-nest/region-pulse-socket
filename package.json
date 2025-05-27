@@ -1,0 +1,25 @@
+{
+  "name": "region-pulse-socket",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vadim-nest/region-pulse-socket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vadim-nest/region-pulse-socket/issues"
+  },
+  "homepage": "https://github.com/vadim-nest/region-pulse-socket#readme",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^9.27.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}
