@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import { createServer } from "node:http";
 import { WebSocketServer, WebSocket } from "ws";
+import { startPoller, latest } from "./poller";
+require('dotenv').config()
 
 const PORT: number = Number(process.env.PORT) || 3000;
 
@@ -14,8 +16,10 @@ const wss = new WebSocketServer({ server: httpServer, path: "/ws" });
 
 wss.on("connection", (ws: WebSocket) => {
   ws.on("message", (msg: string) => ws.send(msg));
-  ws.send(JSON.stringify({ hello: "world" }));
+  ws.send(JSON.stringify({ type: "update", data: latest() }));
 });
+
+startPoller(wss)
 
 httpServer.listen(PORT, () =>
   console.log(`server listening on http://localhost:${PORT}`)
