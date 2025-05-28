@@ -1,7 +1,14 @@
 {
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
   "files": [],
   "references": [
+    { "path": "../packages/types" },
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "include": ["src"]
 }

@@ -6,7 +6,17 @@
     "rootDir": ".",
     "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@myorg/types": ["./packages/types/src"]
+    }
   },
-  "exclude": ["node_modules", "client"]
+  "exclude": ["node_modules", "client"],
+  "files": [],
+  "references": [
+    { "path": "packages/types" },
+    { "path": "server" },
+    { "path": "client" }
+  ]
 }

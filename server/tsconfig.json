@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
     "compilerOptions": {
       "target": "ES2020",
       "module": "CommonJS",
@@ -8,5 +9,6 @@
       "rootDir": "src",
       "skipLibCheck": true
     },
+    "references": [{ "path": "../packages/types" }],
     "include": ["src"]
   }

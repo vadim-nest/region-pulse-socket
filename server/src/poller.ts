@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { RegionStats } from "./types";
+import { RegionStats } from "@myorg/types";
 import { WebSocketServer } from "ws";
 require('dotenv').config()
 
