@@ -1,0 +1,77 @@
+name: ci
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci # installs workspaces
+
+      - run: npm --workspace=server run test
+      - run: npm --workspace=client run test
+
+      - run: npm --workspace=server run build
+      - run: npm --workspace=client run build
+
+  deploy:
+    needs: build-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      IMAGE_NAME: ws-app
+      ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }} # 123456789012
+      ECR_URI: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Configure AWS creds (OIDC or access keys)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }} # or use access keys
+          # access-key-id / secret-access-key if not using role
+
+      # ---------- Build & push server image ----------
+      - name: Login to ECR
+        run: aws ecr get-login-password | \
+          docker login --username AWS --password-stdin $ECR_URI
+
+      - name: Build & push server image
+        run: |
+          docker build -f docker/Dockerfile.server -t $IMAGE_NAME .
+          docker tag $IMAGE_NAME $ECR_URI/$IMAGE_NAME:latest
+          docker push $ECR_URI/$IMAGE_NAME:latest
+
+      - name: Trigger App Runner deployment
+        run: |
+          aws apprunner start-deployment \
+            --service-arn ${{ secrets.APP_RUNNER_ARN }}
+
+      # ---------- Build client & upload ----------
+      - run: npm --workspace=client run build
+
+      - name: Sync to S3
+        run: aws s3 sync client/dist s3://${{ secrets.S3_BUCKET }}/
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
+            --paths '/*'
