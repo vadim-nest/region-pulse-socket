@@ -10,4 +10,9 @@ export default defineConfig({
       "@myorg/types": resolve(__dirname, "../../packages/types/src"),
     },
   },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.ts",
+  },
 });
