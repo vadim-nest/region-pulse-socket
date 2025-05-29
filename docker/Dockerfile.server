@@ -22,7 +22,7 @@ FROM node:20-alpine
 WORKDIR /app
 
 # compiled JS only
-COPY --from=build /app/server/dist ./dist
+COPY --from=build /app/dist ./dist
 
 # manifests so we can npm-install prod deps
 COPY package*.json ./
