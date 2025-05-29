@@ -4,7 +4,9 @@ export interface RegionStats {
   results: {
     stats: {
       online: number;
-      cpu_load: number;
+      server: {
+        cpu_load: number;
+      };
     };
   };
 }
