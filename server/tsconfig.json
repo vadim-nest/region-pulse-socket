@@ -10,6 +10,5 @@
       "rootDir": "src",
       "skipLibCheck": true
     },
-    "references": [{ "path": "../packages/types" }],
     "include": ["src"]
   }

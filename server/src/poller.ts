@@ -1,6 +1,18 @@
-import { RegionStats } from "@myorg/types";
 import { WebSocketServer } from "ws";
 require("dotenv").config();
+
+interface RegionStats {
+  status: string;
+  region: string;
+  results: {
+    stats: {
+      online: number;
+      server: {
+        cpu_load: number;
+      };
+    };
+  };
+}
 
 const URL = process.env.URL;
 
