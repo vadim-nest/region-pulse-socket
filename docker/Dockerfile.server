@@ -15,14 +15,16 @@ COPY packages/types ./packages/types
 
 # server source & TypeScript build
 COPY server/. ./server
-RUN npm run --prefix ./server build
+WORKDIR /app/server
+RUN npm run build
+WORKDIR /app
 
 # ---------- 2. runtime stage ----------
 FROM node:20-alpine
 WORKDIR /app
 
 # compiled JS only
-COPY --from=build /app/dist ./dist
+COPY --from=build /app/server/dist ./dist
 
 # manifests so we can npm-install prod deps
 COPY package*.json ./
