@@ -28,7 +28,7 @@ jobs:
     env:
       REGION: eu-west-2
       IMAGE_NAME: ws-app
-      REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.REGION }}.amazonaws.com
+      REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-2.amazonaws.com
 
     steps:
       - uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
       - name: Configure AWS creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ env.REGION }}
+          aws-region: eu-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
 
       # ----- build & push server image -----
