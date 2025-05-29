@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@myorg/types": ["./packages/types/src"]
+      "@myorg/types": ["./packages/types"]
     }
   },
   "exclude": ["node_modules", "client"],
