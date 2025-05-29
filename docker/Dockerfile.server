@@ -1,19 +1,34 @@
-# docker/Dockerfile.server
+# ---------- 1. build stage ----------
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# copy manifests first for better cache
-COPY server/package*.json ./
-RUN npm ci
+# root manifests
+COPY package*.json ./
+COPY server/package.json ./server/
 
-# then copy the rest of the source
-COPY server/. .
-RUN npm run build
+# install deps needed to compile server
+RUN npm ci --workspace=server --include-workspace-root
 
-# -- runtime image --
+# project references
+COPY tsconfig.json ./
+COPY packages/types ./packages/types
+
+# server source & TypeScript build
+COPY server/. ./server
+RUN npm run --workspace=server build   # emits /app/server/dist
+
+# ---------- 2. runtime stage ----------
 FROM node:20-alpine
 WORKDIR /app
-COPY --from=build /app/dist ./dist
-COPY server/package*.json ./
-RUN npm ci --omit=dev
+
+# compiled JS only
+COPY --from=build /app/server/dist ./dist
+
+# manifests so we can npm-install prod deps
+COPY package*.json ./
+COPY server/package.json ./server/
+
+# install ONLY runtime deps for this workspace
+RUN npm ci --omit=dev --workspace=server --include-workspace-root
+
 CMD ["node", "dist/index.js"]
