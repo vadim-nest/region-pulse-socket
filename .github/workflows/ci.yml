@@ -35,7 +35,7 @@ jobs:
   deploy:
     needs: build-test
     if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       URL: ${{ secrets.STATUS_URL }}
       REGION: eu-west-2
