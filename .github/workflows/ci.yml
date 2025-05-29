@@ -2,7 +2,7 @@ name: ci
 
 on:
   push:
-    branches: [master, develop] # run on main & feature branches
+    branches: [master, develop]
   pull_request:
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
 
   deploy:
     needs: build-test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     env:
       REGION: eu-west-2
@@ -40,9 +40,6 @@ jobs:
         with:
           aws-region: ${{ env.REGION }}
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          # Or uncomment next two lines if using static keys
-          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       # ----- build & push server image -----
       - name: Login to ECR
