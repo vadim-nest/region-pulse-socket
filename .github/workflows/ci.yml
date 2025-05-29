@@ -5,6 +5,10 @@ on:
     branches: [master, develop]
   pull_request:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
