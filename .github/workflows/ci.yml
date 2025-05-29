@@ -16,6 +16,7 @@ jobs:
           cache: "npm"
 
       - run: npm ci
+      - run: npm --workspace=types   run build
       - run: npm --workspace=server run test
       - run: npm --workspace=client run test
       - run: npm --workspace=server run build
