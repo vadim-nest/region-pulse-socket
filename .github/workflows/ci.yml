@@ -10,14 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: npm
 
-      - run: npm ci
+      - name: Upgrade npm to v10
+        run: npm install -g npm@10
+
+      - name: Install dependencies (root + workspaces)
+        run: npm ci
+
       - name: Build shared types
         run: npm --workspace=@myorg/types run build
+
       - run: npm --workspace=server run test
       - run: npm --workspace=client run test
       - run: npm --workspace=server run build
@@ -36,7 +43,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with:
+          node-version: 20
 
       - name: Configure AWS creds
         uses: aws-actions/configure-aws-credentials@v4
