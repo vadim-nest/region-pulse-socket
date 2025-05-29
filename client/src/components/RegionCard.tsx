@@ -1,5 +1,18 @@
 import styled from "styled-components";
-import type { RegionStats } from "@myorg/types";
+// import type { RegionStats } from "@myorg/types";
+
+interface RegionStats {
+  status: string;
+  region: string;
+  results: {
+    stats: {
+      online: number;
+      server: {
+        cpu_load: number;
+      };
+    };
+  };
+}
 
 interface Props {
   data: RegionStats;
