@@ -15,7 +15,7 @@ COPY packages/types ./packages/types
 
 # server source & TypeScript build
 COPY server/. ./server
-RUN npm run --workspace=server build   # emits /app/server/dist
+RUN npm run --prefix ./server build
 
 # ---------- 2. runtime stage ----------
 FROM node:20-alpine
