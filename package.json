@@ -23,5 +23,5 @@
     "prettier": "^3.5.3"
   },
   "private": true,
-  "workspaces": ["packages/types", "server", "client"]
+  "workspaces": ["server", "client"]
 }
