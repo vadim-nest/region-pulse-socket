@@ -23,7 +23,9 @@ jobs:
         run: npm install -g npm@10
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev --workspaces --include-workspace-root
+
+      - run: ls node_modules/@types | head
 
       - name: Build all TypeScript projects
         run: npm run build 
