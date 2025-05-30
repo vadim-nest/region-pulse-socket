@@ -1,22 +1,10 @@
 import styled from "styled-components";
-// import type { RegionStats } from "@myorg/types";
 import { RegionPulseMsg } from "../types";
 
-// interface RegionStats {
-//   status: string;
-//   region: string;
-//   results: {
-//     stats: {
-//       online: number;
-//       server: {
-//         cpu_load: number;
-//       };
-//     };
-//   };
-// }
+type RegionStats = RegionPulseMsg["data"];
 
 interface Props {
-  data: RegionPulseMsg;
+  data: RegionStats;
 }
 
 const Card = styled.div`
@@ -52,11 +40,11 @@ export default function RegionCard({ data }: Props) {
   return (
     <Card>
       <Title>
-        <StatusDot $status={data.data.status === "ok" ? "ok" : "error"} />
-        {data.data.region}
+        <StatusDot $status={data.status === "ok" ? "ok" : "error"} />
+        {data.region}
       </Title>
-      <Stat>online users: {data.data.results.stats.online}</Stat>
-      <Stat>cpu load: {data.data.results.stats.server.cpu_load}</Stat>
+      <Stat>online users: {data.results.stats.online}</Stat>
+      <Stat>cpu load: {data.results.stats.server.cpu_load}</Stat>
     </Card>
   );
 }

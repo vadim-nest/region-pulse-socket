@@ -22,6 +22,6 @@ test("shows region name", () => {
     },
   };
 
-  const { getByText } = render(<RegionCard data={stub} />);
+  const { getByText } = render(<RegionCard data={stub.data} />);
   expect(getByText(/us-east/)).toBeTruthy();
 });
