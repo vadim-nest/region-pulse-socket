@@ -1,7 +1,15 @@
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY client/ .
-RUN npm ci && npm run build         # vite build
+
+# copy whole monorepo to /app in docker
+COPY . .
+
+# install workspace deps
+RUN npm ci --workspaces --include-workspace-root
+
+# build client only
+WORKDIR /app/client
+RUN npm run build
 
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/client/dist /usr/share/nginx/html
