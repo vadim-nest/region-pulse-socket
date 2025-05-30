@@ -28,7 +28,7 @@ jobs:
       - run: ls node_modules/@types | head
 
       - name: Build all TypeScript projects
-        run: npm run build 
+        run: npm run build
 
       - run: npm --workspace=server  run test
       - run: npm --workspace=client  run test
@@ -85,6 +85,4 @@ jobs:
       - name: Sync to S3
         run: aws s3 sync client/dist s3://${{ secrets.S3_BUCKET }}/ --delete
       - name: Invalidate CloudFront
-        run: aws cloudfront create-invalidation \
-          --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
-          --paths '/*'
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths '/*'
