@@ -50,6 +50,9 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies
+        run: npm ci --include=dev --workspaces --include-workspace-root
+
       - name: Set up Docker
         uses: docker/setup-docker-action@v4 # installs CLI + daemon
         # with:
