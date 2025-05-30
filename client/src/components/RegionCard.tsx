@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import React from "react";
 import { RegionPulseMsg } from "../types";
 
 type RegionStats = RegionPulseMsg["data"];
@@ -7,44 +7,45 @@ interface Props {
   data: RegionStats;
 }
 
-const Card = styled.div`
-  border: 1px solid #e2e8f0;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  margin: auto;
-`;
+export default function RegionCard({ data }: Props) {
+  const cardStyle: React.CSSProperties = {
+    border: "1px solid #e2e8f0",
+    padding: "1rem",
+    borderRadius: "0.5rem",
+    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+    margin: "auto",
+  };
 
-const Title = styled.h2`
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.5rem;
-`;
+  const titleStyle: React.CSSProperties = {
+    fontWeight: 700,
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    margin: "0 0 0.5rem",
+  };
 
-const StatusDot = styled.span<{ $status: "ok" | "error" }>`
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background-color: ${({ $status }) =>
-    $status === "ok" ? "#48bb78" : "#f56565"};
-`;
+  const getStatusDotStyle = (status: "ok" | "error"): React.CSSProperties => ({
+    width: "0.75rem",
+    height: "0.75rem",
+    borderRadius: "50%",
+    backgroundColor: status === "ok" ? "#48bb78" : "#f56565",
+  });
 
-const Stat = styled.p`
-  font-size: 0.875rem;
-  margin: 0.25rem 0;
-`;
+  const statStyle: React.CSSProperties = {
+    fontSize: "0.875rem",
+    margin: "0.25rem 0",
+  };
 
-export default function RegionCard({ data }: Props) {  
+  const status = data.status === "ok" ? "ok" : "error";
+
   return (
-    <Card>
-      <Title>
-        <StatusDot $status={data.status === "ok" ? "ok" : "error"} />
+    <div style={cardStyle}>
+      <h2 style={titleStyle}>
+        <span style={getStatusDotStyle(status)} />
         {data.region}
-      </Title>
-      <Stat>online users: {data.results.stats.online}</Stat>
-      <Stat>cpu load: {data.results.stats.server.cpu_load}</Stat>
-    </Card>
+      </h2>
+      <p style={statStyle}>online users: {data.results.stats.online}</p>
+      <p style={statStyle}>cpu load: {data.results.stats.server.cpu_load}</p>
+    </div>
   );
 }

@@ -72,6 +72,9 @@ jobs:
       - name: Trigger App Runner deployment
         run: aws apprunner start-deployment --service-arn ${{ secrets.APP_RUNNER_ARN }}
 
+      - name: Debug - list React types in CI
+        run: |
+          ls -R node_modules/@types | head -20 || echo "no @types folder!"
       # ----- build & upload client -----
       - run: npm --workspace=client run build
       - name: Sync to S3
