@@ -12,6 +12,8 @@ permissions:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    env:
+      VITE_WS_URL: ${{ secrets.WS_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -39,6 +41,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     env:
+      VITE_WS_URL: ${{ secrets.WS_URL }}
       URL: ${{ secrets.STATUS_URL }}
       REGION: eu-west-2
       IMAGE_NAME: ws-app
@@ -54,9 +57,7 @@ jobs:
         run: npm ci --include=dev --workspaces --include-workspace-root
 
       - name: Set up Docker
-        uses: docker/setup-docker-action@v4 # installs CLI + daemon
-        # with:
-        #   version: '24.0.7'   # (optional) pin a version
+        uses: docker/setup-docker-action@v4
 
       - name: Configure AWS creds
         uses: aws-actions/configure-aws-credentials@v4
@@ -77,9 +78,6 @@ jobs:
       - name: Trigger App Runner deployment
         run: aws apprunner start-deployment --service-arn ${{ secrets.APP_RUNNER_ARN }}
 
-      - name: Debug - list React types in CI
-        run: |
-          ls -R node_modules/@types | head -20 || echo "no @types folder!"
       # ----- build & upload client -----
       - run: npm --workspace=client run build
       - name: Sync to S3
