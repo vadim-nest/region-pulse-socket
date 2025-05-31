@@ -4,7 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import { startPoller, latest } from "./poller";
 require('dotenv').config()
 
-const PORT: number = Number(process.env.PORT) || 3000;
+const PORT: number = Number(process.env.PORT) || 8080;
 
 const app = express();
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
