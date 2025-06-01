@@ -22,7 +22,7 @@ export async function poll(wss: WebSocketServer) {
   console.log(URL);
   if (!URL) throw new Error("Missing required env var: URL");
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
+  const timeout = setTimeout(() => controller.abort(), 15000);
 
   try {
     const res = await fetch(URL, { signal: controller.signal });
