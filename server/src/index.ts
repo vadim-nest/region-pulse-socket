@@ -4,6 +4,8 @@ import { WebSocketServer, WebSocket } from "ws";
 import { startPoller, latest } from "./poller";
 require("dotenv").config();
 
+console.log(process.env)
+
 const PORT: number = Number(process.env.PORT) || 3000; // App Runner will set process.env.PORT to 8080
 
 const app = express();
