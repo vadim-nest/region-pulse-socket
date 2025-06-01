@@ -34,7 +34,7 @@ export async function poll(wss: WebSocketServer) {
     );
   } catch (err: any) {
     if (err.name === "AbortError") {
-      console.error("poll error: request timed out");
+      console.error("poll error: request timed out", err);
     } else {
       console.error("poll error:", err);
     }
