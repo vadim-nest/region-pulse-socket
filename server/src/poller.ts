@@ -19,6 +19,7 @@ const URL = process.env.URL;
 let cached: RegionStats | null = null;
 
 export async function poll(wss: WebSocketServer) {
+  console.log(URL);
   if (!URL) throw new Error("Missing required env var: URL");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 5000);
